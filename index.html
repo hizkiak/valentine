@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gak Bisa Nolak! ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #fff5f7;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; 
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            touch-action: manipulation;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 2rem;
+            box-shadow: 0 20px 50px rgba(255, 182, 193, 0.5);
+            max-width: 400px;
+            width: 85%;
+            z-index: 10;
+        }
+        #noBtn {
+            position: fixed; 
+            transition: all 0.2s ease;
+            z-index: 50;
+            touch-action: none;
+        }
+        #yesBtn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+        /* Style untuk Watermark */
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            font-size: 0.8rem;
+            color: #f472b6;
+            opacity: 0.6;
+            letter-spacing: 1px;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="card">
+        <div id="image-box" class="text-7xl mb-4 transition-all duration-300">🥺</div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Mau jadi partner valentine-ku liaa?</h1>
+        
+        <div class="flex justify-center items-center gap-4 h-24">
+            <button id="yesBtn" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                Mau!
+            </button>
+            <button id="noBtn" class="bg-gray-200 text-gray-600 font-bold py-3 px-8 rounded-full shadow-sm">
+                Nggak!
+            </button>
+        </div>
+    </div>
+
+    <div class="watermark">Product by kiaaakk 😉</div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const imageBox = document.getElementById('image-box');
+        
+        let yesScale = 1;
+        let moveCount = 0;
+
+        function setInitialNoPos() {
+            const rect = yesBtn.getBoundingClientRect();
+            noBtn.style.left = (rect.right + 20) + 'px';
+            noBtn.style.top = rect.top + 'px';
+        }
+        window.onload = setInitialNoPos;
+
+        function moveButton(e) {
+            if (e) e.preventDefault();
+            const padding = 60;
+            const maxWidth = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxHeight = window.innerHeight - noBtn.offsetHeight - padding;
+            
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxWidth));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxHeight));
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            
+            yesScale += 0.3;
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            moveCount++;
+            if (moveCount > 3) imageBox.innerText = "😢";
+            if (moveCount > 7) imageBox.innerText = "😭";
+            if (moveCount > 12) imageBox.innerText = "😡";
+            
+            if (yesScale > 5) {
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.left = '50%';
+                yesBtn.style.top = '50%';
+                yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+            }
+        }
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', moveButton);
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        yesBtn.addEventListener('click', () => {
+            document.body.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-screen w-screen text-center p-4">
+                    <div class="text-9xl mb-5 animate-bounce">💖</div>
+                    <h1 class="text-4xl font-bold text-rose-600 mb-4">I KNEW IT!</h1>
+                    <p class="text-xl text-rose-400">Pilihan terbaik! See you on Feb 14th liaaa! 😉</p>
+                    <div class="mt-10 text-pink-300 text-sm">Made with love by kiaaa</div>
+                </div>
+            `;
+            document.body.style.backgroundColor = '#fff';
+            createHearts();
+        });
+
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'absolute text-red-500 text-2xl';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '-50px';
+                heart.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }, 100);
+        }
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
